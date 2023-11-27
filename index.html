@@ -1,122 +1,240 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<meta charset="utf-8">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet"> 
-	<title>School</title>
-	
-	<style> 
-
-	body {
-	 background-image: url("paper.jpg");
-	  background-repeat: no-repeat; /* Do not repeat the image */
-	  background-size: cover; 
-	  margin: 0px;
-	      font-family: 'Architects Daughter', cursive;
-	      padding:0px;
-	}
-	a{
-		text-decoration: none;
-		color: white;
-		border: 2px solid white;
-		border-radius:20px;
-		padding: 10px;
-	}
-	a:hover{
-		padding: 20px 10px 20px 10px;
-	}
-	header{
-		background-color: black;
-		padding: 30px 0px 30px 80px;
-	}
-	main{
-		padding:0px;
-		margin:0px;
-	}
-
-
-	.textGroupe{
-		padding: 50px;
-		padding-top:200px;
-		text-align:center;
-	}
-
-	#math{
-		padding: 50px;
-		padding-top:0px;
-		text-align:center;
-	}
-	.header{
-		text-decoration: underline;
-	}
-
-	
-	</style>
-
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="styles.css"> 
+  <title>Random Quiz</title>
 </head>
 <body>
+<div id="quiz-container">
+  <div><h1 id="question"></h1></div>
+  <!-- <div id="answer" class="message"></div> -->
+  <textarea id="answer-input" placeholder="Type your answer here"></textarea>
+  <div> <button id="checkAnswer" onclick="checkAnswer()">Check Answer</button>
+  <div id="result" class="message"></div>
+  <button onclick="nextQuestion()">Next Question</button>
+  <div id="score">Score: <span id="score-value">0</span></div></div>
+ 
+</div>
 
-	<header> 
-		<a href="#math">Math</a> 
-		<a href="#Chemistry">Chemistry</a>
-		<a href="#smartPeople">Smart People</a>
+<script>
+  let randomlyOrderedQA;
+  let currentQuestionIndex = -1;
+  let score = 0;
+
+  function displayQuestion() {
+    if (currentQuestionIndex === -1) {
+      nextQuestion();
+    } else {
+      document.getElementById('question').innerText = questionsAndAnswers[currentQuestionIndex].question;
+      document.getElementById('answer-input').value = '';
+      document.getElementById('result').innerText = '';
+    }
+  }
+
+  function checkAnswer() {
+    const userAnswer = document.getElementById('answer-input').value.trim();
+    const correctAnswer = questionsAndAnswers[currentQuestionIndex].answer;
+
+    // if (correctAnswer.toLowerCase().contains(userAnswer.toLower)) {
+    // if (true) {
+    //   // document.getElementById('result').innerText = 'Correct!';
+    //   score++;
+    // } 
+    // else {
+      // document.getElementById('result').innerText = 'Incorrect. Try again!';
+    // }
+
+    score++;
+    document.getElementById('result').innerText = correctAnswer;
+    document.getElementById('score-value').innerText = score;
+    document.getElementById('checkAnswer').style.display = "none";
+      document.getElementById('result').style.display = "";
+  }
+
+  function nextQuestion() {
+    document.getElementById('checkAnswer').style.display = "";
+    document.getElementById('result').style.display = "none";
+    // console.log(document.getElementById('checkAnswer').style.display);//align-content
 
 
-	</header>
+    if(currentQuestionIndex < 0 || currentQuestionIndex >= questionsAndAnswers.length){
+      currentQuestionIndex = 0;
+      randomlyOrderedQA = shuffle(questionsAndAnswers);
+    }else{
+      currentQuestionIndex += 1 
+    }
 
-	<main>
+    displayQuestion();
+  }
 
-		<div>
-			<div class="textGroupe" id= "math">
-				<h1 class="header" id = "math">Math<img src="math.png" style=" width: 50px; height: auto;"></h1>
 
-<h2>
+  function shuffle(array) {
+  let currentIndex = array.length,  randomIndex;
 
-<p>E = mc^2</p>
-PI  = </h2> 3.141592653589793238462643383279502884197169399375105820974944592307816406286 208998628034825342117067982148086513282306647093844609550582231725359408128481 117450284102701938521105559644622948954930381964428810975665933446128475648233 786783165271201909145648566923460348610454326648213393607260249141273724587006 606315588174881520920962829254091715364367892590360011330530548820466521384146 951941511609433057270365759591953092186117381932611793105118548074462379962749 567351885752724891227938183011949129833673362440656643086021394946395224737190 702179860943702770539217176293176752384674818467669405132000568127145263560827 785771342757789609173637178721468440901224953430146549585371050792279689258923 542019956112129021960864034418159813629774771309960518707211349999998372978049 951059731732816096318595024459455346908302642522308253344685035261931188171010 003137838752886587533208381420617177669147303598253490428755468731159562863882 353787593751957781857780532171226806613001927876611195909216420198938095257201 065485863278865936153381827968230301952035301852968995773622599413891249721775 283479131515574857242454150695950829533116861727855889075098381754637464939319 255060400927701671139009848824012858361603563707660104710181942955596198946767 837449448255379774726847104047534646208046684259069491293313677028989152104752 162056966024058038150193511253382430035587640247496473263914199272604269922796 782354781636009341721641219924586315030286182974555706749838505494588586926995 690927210797509302955321165344987202755960236480665499119881834797753566369807 426542527862551818417574672890977772793800081647060016145249192173217214772350 141441973568548161361157352552133475741849468438523323907394143334547762416862 518983569485562099219222184272550254256887671790494601653466804988627232791786 085784383827967976681454100953883786360950680064225125205117392984896084128488 626945604241965285022210661186306744278622039194945047123713786960956364371917 287467764657573962413890865832645995813390478027590099465764078951269468398352 595709825822620522489407726719478268482601476990902640136394437455305068203496 252451749399651431429809190659250937221696461515709858387410597885959772975498 930161753928468138268683868942774155991855925245953959431049972524680845987273 644695848653836736222626099124608051243884390451244136549762780797715691435997 700129616089441694868555848406353422072225828488648158456028506016842739452267 467678895252138522549954666727823986456596116354886230577456498035593634568174 324112515076069479451096596094025228879710893145669136867228748940560101503308 617928680920874760917824938589009714909675985261365549781893129784821682998948 722658804857564014270477555132379641451523746234364542858444795265867821051141 354735739523113427166102135969536231442952484937187110145765403590279934403742 007310578539062198387447808478489683321445713868751943506430218453191048481005 370614680674919278191197939952061419663428754440643745123718192179998391015919 561814675142691239748940907186494231961567945208095146550225231603881930142093 762137855956638937787083039069792077346722182562599661501421503068038447734549 202605414665925201497442850732518666002132434088190710486331734649651453905796 268561005508106658796998163574736384052571459102897064140110971206280439039759 515677157700420337869936007230558763176359421873125147120532928191826186125867 321579198414848829164470609575270695722091756711672291098169091528017350671274 858322287183520935396572512108357915136988209144421006751033467110314126711136 990865851639831501970165151168517143765761835155650884909989859982387345528331 635507647918535893226185489632132933089857064204675259070915481416549859461637 180270981994309924488957571282890592323326097299712084433573265489382391193259 746366730583604142813883032038249037589852437441702913276561809377344403070746 921120191302033038019762110110044929321516084244485963766983895228684783123552 
-			</div>
-						<div class="textGroupe">
-							<h1 class="header"id= "Chemistry">Chemistry<img src="flask.png" style=" width: 50px; height: auto;"> .</h1>
+  // While there remain elements to shuffle.
+  while (currentIndex > 0) {
 
-							<p> <h3> Chemical Burns</h3>
-								
-Science is hard
-Chemistry is harder
-<br />
-Chemistry is defined as the complex, emotional or psychological interaction between two people
-Our chemistry is tangible
-Our chemistry moves entire cities
-Chemistry is so hard because you mix all these things together and they either blend and make something fantastic or they blow up in your face
-They leave you with burn marks and scars to remind you just how badly you ****** it all up
-And I think what we have here is a disaster ready to burn my face to blackness
-I think what we have here is a scar ready to form and last forever
-<br />
-What we have here is a chemistry left to remind me I still wasn’t good enough
-What we have here is a chemical reaction that the whole class can laugh at
-<br />
-So science is hard
-Chemistry is so hard
-But having good chemistry and bad timing, that’s just heartbreaking
-</p>
-		
-		
-			</div>
-						<div class="textGroupe" >
-		
-<h1 class="header" id = "smartPeople">Smart People<img src="brain.png" style=" width: 50px; height: auto;"></h1>
-			</div>
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
 
-		</div>
-		<div style="gridlayout: fixed;">
-			<img src="Albert.png"style=" width: 400px; height: auto;">>
-		<img src="newton.png"style=" width: 400px; height: auto;">>
-		<img src="leo.png"style=" width: 400px; height: auto;">>
-		</div>
-		
-	</main>
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+}
+
+  const questionsAndAnswers =[
+  {
+    "question": "Definition of project.",
+    "answer": "A project is a temporary undertaking to achieve a result within a specific scope, schedule and with limited resources."
+  },
+   {
+    "question": "Definition of process.",
+    "answer": " Routine steps to perform a particular function|| No one-time activity|| Defines how a particular function is to be done every time.|| Processes are often parts of projects"
+  },
+   {
+    "question": "Definition of programm.",
+    "answer": "A set of goals||A group of specified projects to achieve a common goal"
+  },
+  {
+    "question": "Difference between project and process and programm",
+    "answer": "#################TODO################"
+  },
+    {
+    "question": "Project manager vs Product manager",
+    "answer": "[Project Manager] TASKS Breaking down tasks,timelines,allocating resources, monitoring task       [Product Manager] VISION Research, Product vison, communication with stakeholders, strategic plan,product roadmap"
+  },
+    {
+    "question": "3 company organization structures:",
+    "answer": "Functional structure||Projectized structure||Matrix structure"
+  },
+    {
+    "question": "2 advantages and disadvantages of functional organization structure:",
+    "answer": "[Advantages]||Authority is clear||Clear dedication/team spirit.||  [Disadvantages]||Teams may not talk each other||Group interest before project interest||It may be hard to get supports by other groups"
+  },
+    {
+    "question": "Discribe the roles of the steering comitee.",
+    "answer": "Selects and approves projects||Stops projects||Sets high level targets"
+  },
+
+  {
+    "question": "Name the 5 project live cycle phases",
+    "answer": "Initiating||Planning||Executing||Monitoring and controlling||Closing"
+  },
+
+  {
+    "question": "Name 3 performance domains.",
+    "answer": "Team, Stakeholders, Uncertainty"
+  },
+  {
+    "question": "Why do we need a business case? What is the reason of existence for the business case?",
+    "answer": "The main reason of existence: Convince stakeholders (e.g. the steering committee)"
+  },
+  {
+    "question": "Give 6 possible components of a business case?",
+    "answer": "Summary||Situation description||Change reasoning||Proposal statement||Estimated resource needs||Estimated schedule||Comparison to other possible solutions/proposals||Identified risks"
+  },
+  {
+    "question": "What kind of costs can we include in a cost-benefit analysis?",
+    "answer": "Potential costs of not doing the project||− Potential costs if the project fails||Opportunity costs"
+  },
+  {
+    "question": "Who prepares the project charter?",
+    "answer": "The project manager"
+  },
+  {
+    "question": "What are 3 additional contents in the project charter compared to the business case?",
+    "answer": "Assigned project manager, responsibility, and authority level|| Name of sponsor with authority||success criteria||Preapproved financial resources"
+  },
+  {
+    "question": "What is the purpose of the project charter?",
+    "answer": ""
+  },
+  {
+    "question": "What is the main difference between the business case and project charter in 2 sentences?",
+    "answer": "Reference for authority||Demarcation of roles and responsibilities||As it’s a “legal contract”: Required when working with||external partners."
+  },
+  {
+    "question": "Name 4 documents that are generated in the project planning phase.",
+    "answer": "Stakeholder register||Scope statement||Work breakdown structure WBS||Schedule"
+  },
+  {
+    "question": "What is a stakeholder?",
+    "answer": "A stakeholder is a person who is either interested in, affected by or supports a project"
+  },
+
+
+  {
+    "question": "Name 2 possible stakeholder categorization methods.",
+    "answer": "Requesters||Project manager"
+  },
+  {
+    "question": "What is the difference between internal and external stakeholders? Name 2 examples each.",
+    "answer": "[External] People and groups outside your organization. [Example]Clients or customers || Regulators  "
+  },
+  {
+    "question": "What is the difference between customer and user? Give an example that shows the difference.",
+    "answer": "customer pays for project. Museum example"
+  },
+  {
+    "question": "Describe the role of the project champion?",
+    "answer": "Strongly supports and Advocates for project"
+  },
+  {
+    "question": "Why is imortant for project objectives to be measurable?",
+    "answer": "To be able to determine whether you’ve met your objectives."
+  },
+  {
+    "question": "What does SMART stand for with respect to project objectives?",
+    "answer": "Specific||Measurable||Aggressive||Realistic||Time sensitive"
+  },
+  {
+    "question": "What is the goal of the WBS?",
+    "answer": "Goal: Identify all important information in project plan to be able to carrying out the work."
+  },
+  {
+    "question": "How should you formulate workpackages in the WBS and why?",
+    "answer": "Workpackages/groups should be no activities, but||deliverables/results."
+  },
+    {
+    "question": "How long workpackages should take?",
+    "answer": "2 weeks"
+  },
+
+  {
+    "question": "Analyse a network diagram.",
+    "answer": "################TODO################"
+  },
+  {
+    "question": "Make a schedule out of the network diagram. What is the difference between a network diagram and the schedule?",
+    "answer": ""
+  },
+  {
+    "question": "Define authority, responsibility and accountability.",
+    "answer": ""
+  },
+  {
+    "question": "Can authority or responsibility be transfered to someone else? Discuss in 2-3 sentences.",
+    "answer": "Authorty can be deligated but resposiblity is always shared. You can never fully transfer responsibilit only authority."
+  },
+  {
+    "question": "Give 3 examples for different degrees of delegation.",
+    "answer": ""
+  },
+  {
+    "question": "What is the best practice in terms of accountability and responsibility assignment?",
+    "answer": ""
+  }
+];
+
+  window.onload = displayQuestion;
+</script>
 
 </body>
 </html>
+

@@ -1,0 +1,78 @@
+/* Apply some basic styling to the whole page */
+body {
+  user-select: none; 
+  font-family: Arial, sans-serif;
+  color: #ffffff;
+  background-color: #3f62f1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+    height: 100vh;
+      margin: 0;
+      text-align: center;
+
+}
+
+#topLeft{
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  display: flex;
+}
+
+.darker{
+  color: #00000062;
+}
+
+
+button {
+  /*font-size: 10vw;*/
+  padding: 5px;
+  font-size: 2vw;
+  background-color: #349beb;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px; 
+}
+
+/* Style the submit button */
+input[type="text"],textarea{
+  padding: 10px;
+  font-size: 18px;
+  color: black;
+  background-color: white;
+
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+    #answer-input {
+      width: 80%;
+      padding: 5px;
+      margin-bottom: 10px;
+    }
+
+  .message {
+      background-color: #0090ff; /* Set the background color for chat messages */
+      padding: 5px 10px; /* Add padding to the chat messages */
+      margin-bottom: 10px; /* Add margin between chat messages */
+      border-radius: 5px; /* Add rounded corners to the chat messages */
+      /* width: 500px; */
+  }
+  .serverMessage{
+    background-color: #1f42ad4f; /* Set the background color for chat messages */
+    padding: 5px 10px; /* Add padding to the chat messages */
+    margin-bottom: 10px; /* Add margin between chat messages */
+    border-radius: 5px; /* Add rounded corners to the chat messages */
+  }
+
+
+
+::selection {
+  background-color: #34e2eb;
+  color: #000000; 
+}
