@@ -348,9 +348,9 @@ x = get(x);
   const answers = getAllAnswers();
 
 
-
+//
   const owner = "Circulai";
-  const repo = "Circulai.github.io";
+  const repo = "myAutomaticPushs";
   const branch = "main"; // or the branch you want to commit to
   const fileName = "answers.json"; // JSON file
   const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${fileName}`;
@@ -358,44 +358,72 @@ x = get(x);
   try {
 
     const r = await fetch(
-      `https://raw.githubusercontent.com/Circulai/Circulai.github.io/main/${fileName}`
+      `https://raw.githubusercontent.com/${owner}/${repo}/main/${fileName}`
     );
 
     const rJson = await r.json();
 
-    console.log(rJson);
+      console.log(rJson);
 
-    const constCurrentUserAgent = navigator.userAgent;
-
-
-
-    // if(rJson["users"].includes(userId)){
-
-    // }
-
-
-    let userAgent = [constCurrentUserAgent];
-      //user already exists
-    //userAgent is an array of strings
-
-    //todo check if userAgent is inside and add 
-    // let user = rJson["users"][userId];
-    // let userAgent = rJson["users"][userId]["userAgent"];
-
-
-    // let userAgentIsInside = userAgent.includes(constCurrentUserAgent);
-    // if (!userAgentIsInside) {
-      //add to the beginning of the array
-      // userAgent.unshift(constCurrentUserAgent);
-    // }
-     
 
     rJson["users"][userId] = {
-      userAgent: userAgent,
+      userAgent: navigator.userAgent,
       answers: answers,
       visitHistory: visitHistoryToSave,
    
     };
+
+//
+
+
+
+  // const owner = "Circulai";
+  // const repo = "Circulai.github.io";
+  // const branch = "main"; // or the branch you want to commit to
+  // const fileName = "answers.json"; // JSON file
+  // const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${fileName}`;
+
+  // try {
+
+  //   const r = await fetch(
+  //     `https://raw.githubusercontent.com/Circulai/Circulai.github.io/main/${fileName}`
+  //   );
+
+  //   const rJson = await r.json();
+
+  //   console.log(rJson);
+
+  //   const constCurrentUserAgent = navigator.userAgent;
+
+
+
+  //   // if(rJson["users"].includes(userId)){
+
+  //   // }
+
+
+  //   let userAgent = [constCurrentUserAgent];
+  //     //user already exists
+  //   //userAgent is an array of strings
+
+  //   //todo check if userAgent is inside and add 
+  //   // let user = rJson["users"][userId];
+  //   // let userAgent = rJson["users"][userId]["userAgent"];
+
+
+  //   // let userAgentIsInside = userAgent.includes(constCurrentUserAgent);
+  //   // if (!userAgentIsInside) {
+  //     //add to the beginning of the array
+  //     // userAgent.unshift(constCurrentUserAgent);
+  //   // }
+     
+
+  //   rJson["users"][userId] = {
+  //     userAgent: userAgent,
+  //     answers: answers,
+  //     visitHistory: visitHistoryToSave,
+   
+  //   };
 
     
     updatedData = rJson;
