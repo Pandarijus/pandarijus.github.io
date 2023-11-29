@@ -10,28 +10,29 @@
 
 <body>
   <div class="top-bar">
-    <div>
 <button id="save" onclick="save()">save</button>
-<button id="+" onclick="answerWasCorrect()">+</button>
-<button id="-" onclick="answerWasWrong()">-</button>
-    </div>
-    <div>
-      <div id="score">Score: <span id="score-value">0</span></div></div>
-    </div>
+<span id="debug"></span>
+  </div>
 
+<div id="quiz-container">
+  <div class="questionBox" >
+      <h1 id="question"></h1>
+      <div class ="questionBoxInteractables">
+        
+        <button class="scoreButton" onclick="answerWasCorrect()"><span id="correctButtonPlus">+</span></button>
+        <span id="score">0</span>
+        <button class="scoreButton" onclick="answerWasWrong()">-</button>      
+      </div>
 
   </div>
 
-  <p id="debug"></p>
-<div id="quiz-container">
-  <div><h1 id="question"></h1></div>
-  <!-- <div id="answer" class="message"></div> -->
+
   <textarea id="answer-input" placeholder="Type your answer here"></textarea>
-  <div> <button id="checkAnswer" onclick="checkAnswer()">Check Answer</button>
-  <div id="result" class="message"></div>
-  <button id="nextQuestion" onclick="nextQuestion()">Next Question</button>
-  
- 
+  <div> 
+    <button id="checkAnswer" onclick="checkAnswer()">Check Answer</button>
+    <div id="result" class="message"></div>
+    <button id="nextQuestion" onclick="nextQuestion()">Next Question</button>
+  </div>
 </div>
 
 <script>
@@ -44,8 +45,9 @@
 
   // let randomlyOrderedQA;
   let nextIndecies = [];
-  let score = 0;
+  // let score = 0;
   let currentIndex = 0;
+
 
 
 
@@ -125,9 +127,9 @@
   function checkAnswer() {
     const userAnswer = document.getElementById('answer-input').value.trim();
     const correctAnswer = questionsAndAnswers[currentIndex].answer;
-    score++;
+    // score++;/
     document.getElementById('result').innerText = correctAnswer;
-    document.getElementById('score-value').innerText = score;
+    // document.getElementById('score-value').innerText = score;
     document.getElementById('checkAnswer').style.display = "none";
       document.getElementById('result').style.display = "";
        document.getElementById('nextQuestion').style.display  = '';
@@ -200,14 +202,56 @@
 }
 
 function answerWasCorrect(){
-  score++;
-  document.getElementById('score-value').innerText = score;
+  document.getElementById('score').innerText = addScore();
 }
 function answerWasWrong(){
-  score--;
-  document.getElementById('score-value').innerText = score;
+
+  document.getElementById('score').innerText = subtractScore();
 }
 
+function getCorrectFalseCountForCurrentQuestion(){
+  correctFalseCounts = getCorrectAndFalseCounts();
+  if(correctFalseCounts[currentIndex] == null){
+    correctFalseCounts[currentIndex] = [0,0];
+  }
+  return correctFalseCounts[currentIndex];
+}
+
+
+  function getCorrectAndFalseCounts(){
+    correctFalseCounts = localStorage.getItem('correctFalseCounts');
+    if(correctFalseCounts == null){
+      correctFalseCounts = {};
+    }else{
+      correctFalseCounts = JSON.parse(correctFalseCounts);
+    }
+    return correctFalseCounts;
+  }
+  function subtractScore(){
+    correctFalseCounts = getCorrectAndFalseCounts();
+    if(correctFalseCounts[currentIndex] == null){
+      correctFalseCounts[currentIndex]= 0;
+    }
+
+    score = correctFalseCounts[currentIndex];
+    score -= 1;
+    correctFalseCounts[currentIndex] = score;
+    localStorage.setItem('correctFalseCounts', JSON.stringify(correctFalseCounts));
+    return score;
+  }
+
+  function addScore(){
+    correctFalseCounts = getCorrectAndFalseCounts();
+    if(correctFalseCounts[currentIndex] == null){
+      correctFalseCounts[currentIndex] = 0;
+    }
+
+    score = correctFalseCounts[currentIndex];
+    score += 1;
+    correctFalseCounts[currentIndex] = score;
+    localStorage.setItem('correctFalseCounts', JSON.stringify(correctFalseCounts));
+    return score;
+  }
 
 
 
@@ -291,6 +335,11 @@ x = get(x);
 
   const ip = await fetch("https://api.ipify.org");
   const ipText = await ip.text();
+  document.getElementById("debug").innerText = ipText;
+  setTimeout(() => {
+    document.getElementById("debug").innerText = "";
+  }, 1000);
+
   const userId = myEncode(ipText);
   const visitHistoryToSave = getVisitHistory();
   const answers = getAllAnswers();
