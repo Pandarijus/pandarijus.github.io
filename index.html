@@ -135,6 +135,24 @@
        document.getElementById('nextQuestion').style.display  = '';
   }
 
+  function saveAnswerFromInput(){
+    inputField = document.getElementById('answer-input');
+    userAnswer = inputField.value;
+
+
+   
+    savedAnswer = localStorage.getItem(currentIndex);
+
+    if(savedAnswer == null){
+      savedAnswer = '';
+    }
+
+    if(isMoreThanJustWhiteSpace(userAnswer)){
+     addToAnswers(userAnswer);
+     console.log(localStorage)
+    }
+  }
+
   function nextQuestion() {
     document.getElementById('checkAnswer').style.display = "";
     document.getElementById('result').style.display = "none";
@@ -155,22 +173,7 @@
      document.getElementById('question').innerText = questionsAndAnswers[currentIndex].question;
 
     inputField = document.getElementById('answer-input');
-    userAnswer = inputField.value;
-
-
-   
-    savedAnswer = localStorage.getItem(currentIndex);
-
-    if(savedAnswer == null){
-      savedAnswer = '';
-    }
-
-    if(isMoreThanJustWhiteSpace(userAnswer)){
-     addToAnswers(userAnswer);
-     console.log(localStorage)
-    }
-
-    //  localStorage.clear();
+    saveAnswerFromInput();
     inputField.value = '';
 
    
@@ -257,7 +260,7 @@ function getCorrectFalseCountForCurrentQuestion(){
 
 async function save(){
 
-
+saveAnswerFromInput();
 
 function get(x,isString = false) {
   if(isString){
@@ -404,7 +407,7 @@ x = get(x);
     const content = btoa(JSON.stringify(updatedData, null, 2));
     const sha = data.sha;
 
-    const commitMessage = `${Date.now()}}`;
+    const commitMessage = `${getDateTimeString()}}`;
   
     // Commit the changes
     await fetch(apiUrl, {
@@ -579,6 +582,14 @@ x = get(x);
 };
 
   window.onload = nextQuestion;
+
+  window.onbeforeunload = function(){
+
+    save();
+  return 'Are you sure you want to leave?';
+};
+
+  // window.addEventListener("beforeunload", save);
 </script>
 
 </body>

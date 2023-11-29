@@ -2,6 +2,7 @@
 body {
   user-select: none;
   font-family: Arial, sans-serif;
+  font-size:2vw;
   color: #ffffff;
   background-color: #3f62f1;
   display: flex;
