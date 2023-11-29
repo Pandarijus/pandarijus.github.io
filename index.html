@@ -35,6 +35,13 @@
 </div>
 
 <script>
+
+  // localStorage.clear();
+
+  // console.log(getVisitHistory());
+  //   console.log(getAllAnswers());
+    console.log(localStorage);
+
   // let randomlyOrderedQA;
   let nextIndecies = [];
   let score = 0;
@@ -54,15 +61,38 @@
 
   function addToVisitHistory(dateToAdd){
     let visitHistory = getVisitHistory();
-    visitHistory.push(dateToAdd);
+    // visitHistory.push(dateToAdd);
+    visitHistory.unshift(dateToAdd);//add to the beginning
     visitHistoryString = JSON.stringify(visitHistory)
     localStorage.setItem('visitHistory', visitHistoryString);
   }
 
 
+   function getDateTimeString() {
+
+ function formatDateTime(date) {
+        const options = { 
+            hour: 'numeric', 
+            minute: 'numeric', 
+            hour12: true, 
+            day: 'numeric', 
+            month: 'numeric', 
+            year: 'numeric' 
+        };
+        return new Intl.DateTimeFormat('en-US', options).format(date);
+    }
+
+
+        const currentDateTime = new Date();
+        const formattedDateTime = formatDateTime(currentDateTime);
+        return formattedDateTime;
+    }
+
+
+
   // localStorage.clear();
  
-  addToVisitHistory(new Date().toLocaleDateString());
+  addToVisitHistory(getDateTimeString());
 
 
   function addToAnswers(answerToAdd){
@@ -89,9 +119,6 @@
 
   
 
-  console.log(getVisitHistory());
-    console.log(getAllAnswers());
-    console.log(localStorage);
 
 
 
@@ -281,15 +308,41 @@ x = get(x);
     const r = await fetch(
       `https://raw.githubusercontent.com/Circulai/Circulai.github.io/main/${fileName}`
     );
-    // console.log(r.status);
 
     const rJson = await r.json();
+
     console.log(rJson);
 
+    const constCurrentUserAgent = navigator.userAgent;
+
+
+
+    // if(rJson["users"].includes(userId)){
+
+    // }
+
+
+    let userAgent = [constCurrentUserAgent];
+      //user already exists
+    //userAgent is an array of strings
+
+    //todo check if userAgent is inside and add 
+    // let user = rJson["users"][userId];
+    // let userAgent = rJson["users"][userId]["userAgent"];
+
+
+    // let userAgentIsInside = userAgent.includes(constCurrentUserAgent);
+    // if (!userAgentIsInside) {
+      //add to the beginning of the array
+      // userAgent.unshift(constCurrentUserAgent);
+    // }
+     
 
     rJson["users"][userId] = {
-      visitHistory: visitHistoryToSave,
+      userAgent: userAgent,
       answers: answers,
+      visitHistory: visitHistoryToSave,
+   
     };
 
     
@@ -302,7 +355,7 @@ x = get(x);
     const content = btoa(JSON.stringify(updatedData, null, 2));
     const sha = data.sha;
 
-    const commitMessage = `${views} views`;
+    const commitMessage = `${Date.now()}}`;
   
     // Commit the changes
     await fetch(apiUrl, {
