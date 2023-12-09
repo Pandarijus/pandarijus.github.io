@@ -1,0 +1,16 @@
+{
+  "name": "PMQuiz",
+  "short_name": "PMQuiz",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#2A3443",
+  "description": "PMQuiz",
+  "theme_color": "#2A3443",
+  "icons": [
+    {
+      "src": "manager-app-Big.png",
+      "sizes": "512X512",
+      "type": "image/ico"
+    }
+  ]
+}
